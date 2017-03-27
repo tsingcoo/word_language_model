@@ -14,9 +14,9 @@ parser.add_argument('--data', type=str, default='./data/penn',
 parser.add_argument('--model', type=str, default='LSTM',
                     help='type of recurrent net (RNN_TANH, RNN_RELU, LSTM, GRU)')
 parser.add_argument('--emsize', type=int, default=200,
-                    help='size of word embeddings')
+                    help='size of word embeddings')  # 向量维度
 parser.add_argument('--nhid', type=int, default=200,
-                    help='humber of hidden units per layer')
+                    help='humber of hidden units per layer')  # 向量维度
 parser.add_argument('--nlayers', type=int, default=2,
                     help='number of layers')
 parser.add_argument('--lr', type=float, default=20,
@@ -51,16 +51,17 @@ if torch.cuda.is_available():
 # Load data
 ###############################################################################
 
-corpus = data.Corpus(args.data)
+corpus = data.Corpus(args.data)  # 返回的corpus以index的形式存储在一维数组中（Tensor），句与句之间用加入的结束符对应的下标隔开
 
 
 def batchify(data, bsz):  # 这里的data类型是Tensor
     nbatch = data.size(0) // bsz  # 总词数除以batch_size得到需要的batch轮数
-    data = data.narrow(0, 0, nbatch * bsz)
-    data = data.view(bsz, -1).t().contiguous()  # the size -1 is inferred from other dimensions
+    data = data.narrow(0, 0, nbatch * bsz)  # 第一个参数用来确定行(0)、列(1)，第二个参数确定开始的行/列，第三个参数确定行数/列数
+    data = data.view(bsz,
+                     -1).t().contiguous()  # the size -1 is inferred from other dimensions, view成bsz行nbatch列，经过t()行列颠倒成nbatch行bsz列
     if args.cuda:
         data = data.cuda()
-    return data
+    return data  # 返回的是nbatch行bsz列的矩阵
 
 
 eval_batch_size = 10
@@ -72,7 +73,7 @@ test_data = batchify(corpus.test, eval_batch_size)
 # Build the model
 ###############################################################################
 
-ntokens = len(corpus.dictionary)
+ntokens = len(corpus.dictionary)  # 这个dictionary看样子包含了三种数据集中所有的词
 model = model.RNNModel(args.model, ntokens, args.emsize, args.nhid, args.nlayers)
 if args.cuda:
     model.cuda()

@@ -5,7 +5,7 @@ import torch
 class Dictionary(object):
     def __init__(self):
         self.word2idx = {}
-        self.idx2word = []
+        self.idx2word = []  # list的里面存储的word，下标即是dict中的index
 
     def add_word(self, word):
         if word not in self.word2idx:
@@ -32,7 +32,7 @@ class Corpus(object):
             tokens = 0
             for line in f:
                 words = line.split() + ['<eos>']
-                tokens += len(words)
+                tokens += len(words)  # 这个token传到了下面的with语句里面用，等于所有句子里面词的个数加一
                 for word in words:
                     self.dictionary.add_word(word)
 
@@ -43,7 +43,7 @@ class Corpus(object):
             for line in f:
                 words = line.split() + ['<eos>']
                 for word in words:
-                    ids[token] = self.dictionary.word2idx[word]  # 把文字转换成数字，存储在一维Tensor里面，用EOS分割每一句
+                    ids[token] = self.dictionary.word2idx[word]  # 把文字转换成数字，把文章中所有句子存储在一维Tensor里面，用EOS分割每一句
                     token += 1
 
         return ids

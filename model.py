@@ -6,8 +6,11 @@ class RNNModel(nn.Module):
     """Container module with an encoder, a recurrent module, and a decoder."""
 
     def __init__(self, rnn_type, ntoken, ninp, nhid, nlayers):
+
         super(RNNModel, self).__init__()
+
         self.encoder = nn.Embedding(ntoken, ninp)
+
         if rnn_type in ['LSTM', 'GRU']:
             self.rnn = getattr(nn, rnn_type)(ninp, nhid, nlayers, bias=False)
         else:
@@ -17,6 +20,7 @@ class RNNModel(nn.Module):
                 raise ValueError("""An invalid option for `--model` was supplied,
                                  options are ['LSTM', 'GRU', 'RNN_TANH' or 'RNN_RELU']""")
             self.rnn = nn.RNN(ninp, nhid, nlayers, nonlinearity=nonlinearity, bias=False)
+
         self.decoder = nn.Linear(nhid, ntoken)
 
         self.init_weights()
