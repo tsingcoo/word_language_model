@@ -16,7 +16,7 @@ parser.add_argument('--model', type=str, default='LSTM',
 parser.add_argument('--emsize', type=int, default=200,
                     help='size of word embeddings')  # 向量维度
 parser.add_argument('--nhid', type=int, default=200,
-                    help='humber of hidden units per layer')  # 向量维度
+                    help='number of hidden units per layer')  # 向量维度,我的更新已被采用
 parser.add_argument('--nlayers', type=int, default=2,
                     help='number of layers')
 parser.add_argument('--lr', type=float, default=20,
@@ -25,8 +25,8 @@ parser.add_argument('--clip', type=float, default=0.5,
                     help='gradient clipping')
 parser.add_argument('--epochs', type=int, default=6,
                     help='upper epoch limit')
-parser.add_argument('--batch-size', type=int, default=20, metavar='N',
-                    help='batch size')
+parser.add_argument('--batch_size', type=int, default=20, metavar='N',
+                    help='batch size')  # 我的更新，已被采用
 parser.add_argument('--bptt', type=int, default=20,
                     help='sequence length')
 parser.add_argument('--seed', type=int, default=1111,
