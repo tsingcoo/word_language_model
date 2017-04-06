@@ -1,3 +1,5 @@
+# coding:utf-8
+
 import argparse
 import time
 import math
@@ -74,7 +76,7 @@ test_data = batchify(corpus.test, eval_batch_size)
 ###############################################################################
 
 ntokens = len(corpus.dictionary)  # 这个dictionary看样子包含了三种数据集中所有的词
-model = model.RNNModel(args.model, ntokens, args.emsize, args.nhid, args.nlayers)#lstm, 总词数，200，200，2
+model = model.RNNModel(args.model, ntokens, args.emsize, args.nhid, args.nlayers)  # lstm, 总词数，200，200，2
 if args.cuda:
     model.cuda()
 
@@ -108,7 +110,7 @@ def evaluate(data_source):
         data, targets = get_batch(data_source, i, evaluation=True)
         output, hidden = model(data, hidden)
         output_flat = output.view(-1, ntokens)
-        total_loss += len(data) * criterion(output_flat, targets).data
+        total_loss += len(data) * criterion(output_flat, targets).data  # 用输出和目标词做交叉熵
         hidden = repackage_hidden(hidden)
     return total_loss[0] / len(data_source)
 
