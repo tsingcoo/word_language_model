@@ -16,7 +16,7 @@ parser.add_argument('--model', type=str, default='LSTM',
 parser.add_argument('--emsize', type=int, default=200,
                     help='size of word embeddings')  # 向量维度
 parser.add_argument('--nhid', type=int, default=200,
-                    help='number of hidden units per layer')  # 向量维度,我的更新已被采用
+                    help='number of hidden units per layer')  # 向量维度,我的更新,已被采用
 parser.add_argument('--nlayers', type=int, default=2,
                     help='number of layers')
 parser.add_argument('--lr', type=float, default=20,
@@ -74,7 +74,7 @@ test_data = batchify(corpus.test, eval_batch_size)
 ###############################################################################
 
 ntokens = len(corpus.dictionary)  # 这个dictionary看样子包含了三种数据集中所有的词
-model = model.RNNModel(args.model, ntokens, args.emsize, args.nhid, args.nlayers)
+model = model.RNNModel(args.model, ntokens, args.emsize, args.nhid, args.nlayers)#lstm, 总词数，200，200，2
 if args.cuda:
     model.cuda()
 

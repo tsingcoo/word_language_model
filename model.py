@@ -9,10 +9,11 @@ class RNNModel(nn.Module):
 
         super(RNNModel, self).__init__()
 
-        self.encoder = nn.Embedding(ntoken, ninp)
+        self.encoder = nn.Embedding(ntoken,
+                                    ninp)  # A simple lookup table that stores embeddings of a fixed dictionary and size.
 
         if rnn_type in ['LSTM', 'GRU']:
-            self.rnn = getattr(nn, rnn_type)(ninp, nhid, nlayers, bias=False)
+            self.rnn = getattr(nn, rnn_type)(ninp, nhid, nlayers, bias=False)  # 这句话没有理解
         else:
             try:
                 nonlinearity = {'RNN_TANH': 'tanh', 'RNN_RELU': 'relu'}[rnn_type]
@@ -23,7 +24,7 @@ class RNNModel(nn.Module):
 
         self.decoder = nn.Linear(nhid, ntoken)
 
-        self.init_weights()
+        self.init_weights()  # 这里初始化了encoder的权重和decoder的权重和偏置
 
         self.rnn_type = rnn_type
         self.nhid = nhid
@@ -31,9 +32,9 @@ class RNNModel(nn.Module):
 
     def init_weights(self):
         initrange = 0.1
-        self.encoder.weight.data.uniform_(-initrange, initrange)
-        self.decoder.bias.data.fill_(0)
-        self.decoder.weight.data.uniform_(-initrange, initrange)
+        self.encoder.weight.data.uniform_(-initrange, initrange)  # Embedding后面有weight
+        self.decoder.bias.data.fill_(0)  # Linear后面有bias
+        self.decoder.weight.data.uniform_(-initrange, initrange)  # Linear后面有weight
 
     def forward(self, input, hidden):
         emb = self.encoder(input)
